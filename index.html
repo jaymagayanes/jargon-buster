@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jargon Buster - Tech Onboarding</title>
+  <style>
+    :root {
+      --bg-primary: #f5f5f7;
+      --bg-card: #ffffff;
+      --text-main: #1d1d1f;
+      --text-muted: #6e6e73;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --accent-light: #e8f2fc;
+      --border: #d2d2d7;
+      --border-light: #e5e5ea;
+      --precursor-bg: #fff9db;
+      --precursor-border: #f59f00;
+      --precursor-text: #854d0e;
+      --enabler-bg: #ebfbee;
+      --enabler-border: #38bdf8;
+      --enabler-text: #166534;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    header {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 24px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+
+    .brand span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: -0.01em;
+    }
+
+    .tabs {
+      display: flex;
+      background: #e8e8ed;
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      gap: 2px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 7px 18px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-weight: 600;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Tab Content Views */
+    .tab-view {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .tab-view.active {
+      display: flex;
+    }
+
+    /* Search & Filter Bar */
+    .search-section {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      font-size: 1.05rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      outline: none;
+      transition: all 0.2s ease;
+      color: var(--text-main);
+      box-shadow: var(--shadow);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .category-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chip:hover, .chip.active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: #f0f0f4;
+      color: var(--text-muted);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .definition-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    /* Graph Shortcut Button */
+    .graph-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid rgba(0, 113, 227, 0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      width: fit-content;
+    }
+
+    .graph-link-btn:hover {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .analogy-box {
+      background: #fafafc;
+      border-left: 3px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: #3a3a3c;
+    }
+
+    .relation-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .relation-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .pill-precursor {
+      background: var(--precursor-bg);
+      color: var(--precursor-text);
+      border: 1px solid rgba(245, 159, 0, 0.3);
+    }
+
+    .pill-enabler {
+      background: var(--enabler-bg);
+      color: var(--enabler-text);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .pill:hover {
+      filter: brightness(0.95);
+      transform: scale(1.03);
+    }
+
+    /* Graph Tab Style (Zero External Dependencies) */
+    .graph-wrapper {
+      position: relative;
+      flex: 1;
+      height: 75vh;
+      min-height: 550px;
+      background: #1e1e1e;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+    }
+
+    #graphCanvas {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      display: block;
+    }
+
+    #graphCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Graph Controls Overlay */
+    .graph-controls {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .graph-btn {
+      background: #f5f5f7;
+      border: 1px solid var(--border-light);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .graph-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Graph Details Sidebar */
+    .graph-sidebar {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      bottom: 16px;
+      width: 340px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 10;
+      overflow-y: auto;
+      transform: translateX(120%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .graph-sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 10px;
+    }
+
+    .sidebar-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+    }
+
+    /* Legend */
+    .graph-legend {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-light);
+      font-size: 0.75rem;
+      display: flex;
+      gap: 16px;
+      z-index: 10;
+      color: var(--text-muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .graph-sidebar {
+        width: calc(100% - 32px);
+      }
+    }
+  
+    /* Welcome pop-up */
+    .welcome-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(29, 29, 31, 0.45);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; opacity: 0; visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .welcome-overlay.show { opacity: 1; visibility: visible; }
+    .welcome-modal {
+      position: relative; width: 100%; max-width: 480px;
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      padding: 36px 32px 28px; text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      transform: translateY(16px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .welcome-overlay.show .welcome-modal { transform: none; }
+    .welcome-close {
+      position: absolute; top: 14px; right: 14px; width: 32px; height: 32px;
+      border: none; border-radius: 50%; background: #f0f0f4; color: var(--text-muted);
+      font-size: 1.1rem; line-height: 1; cursor: pointer; transition: background 0.15s ease;
+    }
+    .welcome-close:hover { background: var(--border-light); color: var(--text-main); }
+    .welcome-icon {
+      width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 16px;
+      background: var(--accent-light); display: flex; align-items: center;
+      justify-content: center; font-size: 1.7rem;
+    }
+    .welcome-modal h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px; }
+    .welcome-modal p { font-size: 0.95rem; line-height: 1.55; color: var(--text-muted); margin-bottom: 14px; }
+    .welcome-note {
+      text-align: left; background: var(--precursor-bg); border-left: 3px solid var(--precursor-border);
+      color: var(--precursor-text) !important; padding: 12px 14px; border-radius: var(--radius-sm);
+      font-size: 0.85rem !important;
+    }
+    .welcome-note strong { font-weight: 700; }
+    .welcome-cta {
+      width: 100%; margin-top: 8px; padding: 13px 20px; border: none; border-radius: var(--radius-md);
+      background: var(--accent); color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .welcome-cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .welcome-dismiss {
+      display: block; margin: 12px auto 0; background: none; border: none;
+      color: var(--text-muted); font-size: 0.8rem; cursor: pointer; text-decoration: underline;
+    }
+
+    /* Compare 2-5 terms */
+    .compare-btn { margin-right: 8px; }
+    .compare-btn.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18), var(--shadow); }
+    .cmp-tray {
+      position: fixed; left: 50%; bottom: 20px; z-index: 800;
+      transform: translate(-50%, 24px); opacity: 0; visibility: hidden;
+      width: calc(100% - 32px); max-width: 720px;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+      padding: 12px 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+    }
+    .cmp-tray.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+    .cmp-tray-top { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 6px; }
+    .cmp-count { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+    .cmp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cmp-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 10px;
+      background: var(--accent-light); color: var(--accent); border-radius: 14px; font-size: 0.8rem; font-weight: 600;
+    }
+    .cmp-chip button { border: none; background: transparent; color: inherit; cursor: pointer; font-size: 1rem; line-height: 1; padding: 0 4px; }
+    .cmp-tray-actions { display: flex; gap: 8px; align-items: center; }
+    .cmp-clear { border: none; background: none; color: var(--text-muted); font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
+    .cmp-ask {
+      border: none; background: var(--accent); color: #fff; font-size: 0.9rem; font-weight: 600;
+      padding: 10px 18px; border-radius: var(--radius-md); cursor: pointer; transition: background 0.15s ease;
+    }
+    .cmp-ask:hover:not(:disabled) { background: var(--accent-hover); }
+    .cmp-ask:disabled { background: #b8c4d2; cursor: not-allowed; }
+    .cmp-overlay {
+      position: fixed; inset: 0; z-index: 950; background: rgba(29, 29, 31, 0.45);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .cmp-overlay.show { opacity: 1; visibility: visible; }
+    .cmp-modal {
+      position: relative; width: 100%; max-width: 640px; max-height: 92vh; overflow-y: auto;
+      background: var(--bg-card); border-radius: var(--radius-lg); padding: 28px 28px 22px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    }
+    .cmp-modal h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; padding-right: 36px; }
+    .cmp-sub { font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 14px; }
+    .cmp-focus { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-bottom: 14px; }
+    .cmp-focus label { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; cursor: pointer; }
+    .cmp-prompt {
+      width: 100%; height: 240px; resize: vertical; padding: 12px; font-size: 0.82rem; line-height: 1.5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      border: 1px solid var(--border); border-radius: var(--radius-sm); background: #fafafc; color: var(--text-main);
+    }
+    .cmp-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .cmp-secondary {
+      padding: 11px 18px; border: 1px solid var(--border); border-radius: var(--radius-md);
+      background: #fff; color: var(--text-main); font-size: 0.92rem; font-weight: 600; cursor: pointer; text-decoration: none;
+    }
+    .cmp-primary {
+      padding: 11px 22px; border: none; border-radius: var(--radius-md);
+      background: var(--accent); color: #fff; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+    }
+    .cmp-primary:hover { background: var(--accent-hover); }
+    .cmp-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 12px; line-height: 1.45; }
+    .cmp-toast {
+      position: fixed; left: 50%; bottom: 90px; z-index: 1100; transform: translateX(-50%);
+      background: #1d1d1f; color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 0.85rem;
+      opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s; max-width: calc(100% - 32px); text-align: center;
+    }
+    .cmp-toast.show { opacity: 1; visibility: visible; }
+    @media (max-width: 520px) { .cmp-focus { grid-template-columns: 1fr; } }
+
+    /* Quiz tab */
+    .qz-wrap { max-width: 860px; margin: 0 auto; }
+    .qz-top { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 20px 24px; margin-bottom: 18px; }
+    .qz-top h2 { font-size: 1.25rem; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .qz-sub { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px; }
+    .qz-bar { height: 8px; background: #eceef3; border-radius: 6px; overflow: hidden; }
+    .qz-bar > i { display: block; height: 100%; background: var(--accent); border-radius: 6px; transition: width 0.4s ease; }
+    .qz-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+    .qz-btn { padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--text-main); }
+    .qz-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .qz-btn:hover { box-shadow: var(--shadow-hover); }
+    .qz-link { border: none; background: none; color: var(--text-muted); font-size: 0.8rem; text-decoration: underline; cursor: pointer; margin-left: auto; }
+    .qz-cat { background: var(--bg-card); border-radius: var(--radius-md); box-shadow: var(--shadow); padding: 16px 20px; margin-bottom: 12px; }
+    .qz-cat-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-weight: 700; }
+    .qz-cat-head span { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+    .qz-packs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .qz-pack { padding: 7px 12px; border: 1px solid var(--border); border-radius: 18px; background: #fff; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+    .qz-pack.done { background: #e6f6ec; border-color: #9bd5b0; color: #1d7a45; }
+    .qz-meta { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px; font-weight: 600; }
+    .qz-card { background: var(--bg-card); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 24px; }
+    .qz-q { font-size: 1.05rem; line-height: 1.5; font-weight: 600; margin-bottom: 16px; }
+    .qz-quote { font-weight: 400; font-size: 0.98rem; margin-top: 10px; padding: 12px 14px; background: #f5f5f8; border-left: 3px solid var(--accent); border-radius: var(--radius-sm); }
+    .qz-opt { display: block; width: 100%; text-align: left; padding: 12px 14px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: var(--radius-md); background: #fff; font-size: 0.92rem; line-height: 1.45; cursor: pointer; }
+    .qz-opt:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-light); }
+    .qz-opt.ok { background: #e6f6ec; border-color: #43a56b; }
+    .qz-opt.bad { background: #fdeaea; border-color: #d9534f; }
+    .qz-opt:disabled { cursor: default; }
+    .qz-why { margin-top: 6px; padding: 12px 14px; background: #f5f5f8; border-radius: var(--radius-sm); font-size: 0.88rem; line-height: 1.5; }
+    .qz-miss { text-align: left; padding: 10px 0; border-top: 1px solid var(--border); font-size: 0.88rem; line-height: 1.5; }
+    .qz-score { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; }
+
+    /* Floating quiz window */
+    .qz-win { position: fixed; right: 24px; top: 96px; width: 420px; height: 560px; min-width: 300px; min-height: 160px; max-width: calc(100vw - 16px); max-height: calc(100vh - 16px); z-index: 850; display: none; flex-direction: column; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,.28); resize: both; overflow: hidden; }
+    .qz-win.open { display: flex; }
+    .qz-win.min { height: auto !important; min-height: 0; resize: none; }
+    .qz-win.min .qz-body { display: none; }
+    .qz-head { position: relative; overflow: hidden; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; color: #fff; cursor: grab; touch-action: none; user-select: none; background-color: #5b4bd8; background-image: linear-gradient(45deg, rgba(255,255,255,.16) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.16) 50%, rgba(255,255,255,.16) 75%, transparent 75%); background-size: 28px 28px; animation: qzLines 1.4s linear infinite; }
+    .qz-head b { position: relative; z-index: 1; }
+    .qz-hbtns { position: relative; z-index: 2; display: flex; gap: 6px; }
+    .qz-hbtns button { width: 28px; height: 28px; border: none; border-radius: 50%; background: rgba(255,255,255,.25); color: #fff; font-size: 1rem; cursor: pointer; }
+    .qz-fl { position: absolute; top: 8px; font-size: 1.2rem; animation: qzFloat 3s ease-in-out infinite; animation-delay: var(--d); pointer-events: none; }
+    .qz-body { flex: 1; overflow-y: auto; padding: 14px; background: linear-gradient(#fff, #f6f4ff); }
+    .qz-body .qz-card, .qz-body .qz-top { padding: 16px; }
+    .qz-react { font-weight: 700; font-size: 1.05rem; margin: 6px 0; animation: qzPop .5s cubic-bezier(.3,1.6,.5,1); }
+    .qz-shake { animation: qzShake .45s; }
+    @keyframes qzLines { to { background-position: 28px 0; } }
+    @keyframes qzFloat { 0%,100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(8px) rotate(10deg); } }
+    @keyframes qzPop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes qzShake { 20%,60% { transform: translateX(-7px); } 40%,80% { transform: translateX(7px); } }
+    @media (prefers-reduced-motion: reduce) { .qz-head, .qz-fl, .qz-react, .qz-shake { animation: none; } }
+    @media (max-width: 520px) { .qz-win { left: 8px !important; right: 8px !important; width: auto; } }
+    /* Formal exam */
+    .ex-overlay { position: fixed; inset: 0; z-index: 990; display: none; overflow-y: auto; background: #ece5d3; font-family: Georgia, 'Times New Roman', serif; color: #1c1c28; user-select: none; -webkit-user-select: none; }
+    .ex-overlay.on { display: block; }
+    .ex-bar { position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: #14213d; color: #e8d9a8; letter-spacing: .06em; text-transform: uppercase; font-size: .85rem; z-index: 2; }
+    .ex-bar b { font-size: 1rem; font-variant-numeric: tabular-nums; }
+    .ex-bar b.low { color: #ff8b7b; }
+    .ex-paper { max-width: 760px; margin: 28px auto; padding: 36px 44px; background: #fffdf7; border: 1px solid #b9ae94; outline: 4px double #d8ccaa; outline-offset: -12px; box-shadow: 0 6px 24px rgba(0,0,0,.12); }
+    .ex-paper h1 { font-size: 1.5rem; margin-bottom: 12px; border-bottom: 2px solid #14213d; padding-bottom: 8px; }
+    .ex-paper h2 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+    .ex-paper li { margin: 8px 0 8px 20px; line-height: 1.5; }
+    .ex-paper p { line-height: 1.55; margin: 10px 0; }
+    .ex-honor { display: block; margin: 18px 0; font-style: italic; }
+    .ex-q { font-size: 1.08rem; line-height: 1.55; margin-bottom: 16px; }
+    .ex-q .qz-quote { font-family: inherit; background: #f6f0de; border-left-color: #14213d; }
+    .ex-opt { display: block; width: 100%; text-align: left; font: inherit; font-size: .98rem; line-height: 1.45; padding: 11px 14px; margin-bottom: 9px; background: #fff; border: 1px solid #b9ae94; border-radius: 2px; cursor: pointer; }
+    .ex-opt:hover { background: #f6f0de; }
+    .ex-opt.sel { background: #14213d; color: #fff; border-color: #14213d; }
+    .ex-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+    .ex-btn { font: inherit; padding: 10px 22px; background: #14213d; color: #e8d9a8; border: 1px solid #14213d; border-radius: 2px; cursor: pointer; letter-spacing: .03em; }
+    .ex-btn.ghost { background: transparent; color: #14213d; }
+    .ex-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .ex-pal { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
+    .ex-pal button { width: 30px; height: 30px; font: inherit; font-size: .8rem; border: 1px solid #b9ae94; background: #fff; cursor: pointer; }
+    .ex-pal button.ans { background: #d9e2f3; }
+    .ex-pal button.cur { background: #14213d; color: #fff; }
+    .ex-stamp { display: inline-block; font-size: 2rem; font-weight: 700; letter-spacing: .15em; padding: 6px 22px; border: 4px double; transform: rotate(-4deg); margin: 6px 0 14px; }
+    .ex-stamp.pass { color: #1d7a45; } .ex-stamp.fail { color: #b3261e; }
+    .ex-tbl { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .95rem; }
+    .ex-tbl td { padding: 6px 8px; border-bottom: 1px solid #d8ccaa; }
+    .ex-tbl td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .ex-rev { margin: 10px 0; padding: 10px 12px; background: #f6f0de; font-size: .9rem; line-height: 1.5; }
+
+    /* Doodle background, card art, focus mode */
+    body { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' fill='none' stroke='%230071e3' stroke-opacity='.11' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='40' cy='44' r='11'/%3E%3Ccircle cx='40' cy='44' r='4'/%3E%3Cpath d='M40 26v6M40 56v6M22 44h6M52 44h6M27 31l4 4M49 53l4 4M53 31l-4 4M31 53l-4 4'/%3E%3Cpath d='M150 60a14 14 0 0 1 4-27 18 18 0 0 1 34 4 12 12 0 0 1-2 23z'/%3E%3Ccircle cx='60' cy='170' r='7'/%3E%3Ccircle cx='110' cy='150' r='7'/%3E%3Ccircle cx='120' cy='205' r='7'/%3E%3Cpath d='M66 167l38-14M65 175l48 26M113 157l5 41'/%3E%3Crect x='190' y='150' width='36' height='28' rx='5'/%3E%3Cpath d='M197 150v-8a11 11 0 0 1 22 0v8M170 215l-12 12 12 12M200 215l12 12-12 12M190 212l-6 32'/%3E%3C/svg%3E"); background-size: 260px 260px; background-attachment: fixed; }
+    .card { cursor: pointer; }
+    .card-art { display: inline-block; margin-right: 6px; font-size: 1.35rem; vertical-align: -2px; }
+    .analogy-box { position: relative; overflow: hidden; }
+    .analogy-box::after { content: attr(data-art); position: absolute; right: 10px; bottom: -8px; font-size: 3.4rem; opacity: .16; pointer-events: none; }
+    .focus-dim { position: fixed; inset: 0; z-index: 840; background: rgba(12, 14, 24, .66); opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease; }
+    .focus-dim.on { opacity: 1; visibility: visible; }
+    .card.focused { position: relative; z-index: 845; transform: scale(1.03); border-color: var(--accent); box-shadow: 0 24px 70px rgba(0, 0, 0, .45); cursor: default; transition: transform .25s ease, box-shadow .25s ease; }
+    body.focus-on .tab-view.active { animation: none; }
+
+    /* Mastery Exam button: spinning rainbow border, shimmer sweep, twinkle */
+    @property --qz-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    .qz-btn.exam {
+      position: relative; overflow: hidden; border: 2px solid transparent; font-weight: 700;
+      background: linear-gradient(#fff, #fff) padding-box,
+                  conic-gradient(from var(--qz-angle), #f5c542, #ff7ab8, #7a5cff, #3ec6ff, #f5c542) border-box;
+      box-shadow: 0 0 14px rgba(122, 92, 255, .35);
+      animation: qzSpin 3s linear infinite;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .qz-btn.exam:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 24px rgba(255, 122, 184, .55), 0 0 40px rgba(122, 92, 255, .35); }
+    .qz-btn.exam::after {
+      content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; pointer-events: none;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .9), transparent);
+      transform: skewX(-20deg); animation: qzShine 2.8s ease-in-out infinite;
+    }
+    .qz-btn.exam::before { content: '\2728'; position: absolute; top: 1px; right: 5px; font-size: .65rem; animation: qzTwinkle 1.6s ease-in-out infinite; }
+    @keyframes qzSpin { to { --qz-angle: 360deg; } }
+    @keyframes qzShine { 0% { left: -60%; } 60%, 100% { left: 130%; } }
+    @keyframes qzTwinkle { 0%, 100% { opacity: .2; transform: scale(.6) rotate(0); } 50% { opacity: 1; transform: scale(1.2) rotate(25deg); } }
+    @media (prefers-reduced-motion: reduce) { .qz-btn.exam, .qz-btn.exam::after, .qz-btn.exam::before { animation: none; } }
+  </style>
+</head>
+<body>
+  <div class="welcome-overlay" id="welcomeOverlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="welcome-modal">
+      <button class="welcome-close" onclick="closeWelcome()" aria-label="Close">&times;</button>
+      <div class="welcome-icon">&#128075;</div>
+      <h2 id="welcomeTitle">Hey, new joiner!</h2>
+      <p>Browse these terms to get comfortable with common tech vocabulary. Think of it as a starting point &mdash; it doesn&rsquo;t cover everything, but each definition is explained in plain English with a real-world analogy.</p>
+      <p class="welcome-note"><strong>Please note:</strong> some entries may be simplified or differ from how your own team uses a term, so check your team&rsquo;s documentation for the details that matter.</p>
+      <button class="welcome-cta" onclick="closeWelcome()">Got it, let&rsquo;s explore</button>
+      <button class="welcome-dismiss" onclick="closeWelcome(true)">Don&rsquo;t show this again</button>
+    </div>
+  </div>
+
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <h1>Jargon Buster</h1>
+        <span>New joiner / Refresher</span>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('search')">Search</button>
+        <button class="tab-btn" onclick="switchTab('graph')">Graph</button>
+        <button class="tab-btn" onclick="qzOpen()">Quiz</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <!-- TAB 1: SEARCH & CARDS -->
+    <section id="search-tab" class="tab-view active">
+      <div class="search-section">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search a term, tool or concept..." oninput="handleSearch()">
+        </div>
+        <div class="category-chips" id="categoryChips"></div>
+      </div>
+
+      <div class="cards-grid" id="cardsGrid">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- TAB 2: INTERACTIVE NETWORK GRAPH -->
+    <div class="qz-win" id="qzWin" role="dialog" aria-label="Quiz">
+      <div class="qz-head" id="qzHead"><span class="qz-fl" style="left:38%;--d:0s">&#129504;</span><span class="qz-fl" style="left:52%;--d:.8s">&#129299;</span><span class="qz-fl" style="left:66%;--d:1.6s">&#10024;</span><b>&#127918; Quiz time!!!</b><span class="qz-hbtns"><button onclick="qzMin()" aria-label="Minimise">&ndash;</button><button onclick="qzClose()" aria-label="Close">&times;</button></span></div>
+      <div class="qz-body"><div class="qz-wrap" id="qzRoot"></div></div>
+    </div>
+    <div class="ex-overlay" id="exOverlay"></div>
+    <div class="focus-dim" id="focusDim" onclick="unfocusCard()"></div>
+
+    <section id="graph-tab" class="tab-view">
+      <div class="graph-wrapper">
+        <canvas id="graphCanvas"></canvas>
+
+        <div class="graph-controls">
+          <label class="graph-btn" style="display:flex;gap:6px;align-items:center;cursor:pointer;"><input type="checkbox" id="ghostToggle" checked onchange="showGhosts=this.checked"> Undefined terms</label>
+          <button class="graph-btn" onclick="resetGraphView()">Reset View</button>
+          <button class="graph-btn" onclick="zoomGraph(1.2)">Zoom In (+)</button>
+          <button class="graph-btn" onclick="zoomGraph(0.8)">Zoom Out (-)</button>
+        </div>
+
+        <div class="graph-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#4aa8ff;"></span> Selected Node</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#f59f00;"></span> Precursor (Dependency)</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#38bdf8;"></span> Downstream (Enabler)</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#7a7a7a;"></span> No entry yet</div>
+        </div>
+
+        <div class="graph-sidebar" id="graphSidebar">
+          <div class="sidebar-header">
+            <h3 class="sidebar-title" id="sbTitle">Node Details</h3>
+            <button class="close-btn" onclick="closeSidebar()">×</button>
+          </div>
+          <div>
+            <div class="section-label">Category</div>
+            <span class="card-badge" id="sbBadge">Platform</span>
+          </div>
+          <div>
+            <div class="section-label">Definition</div>
+            <p class="definition-text" id="sbDefinition"></p>
+          </div>
+          <div class="analogy-box">
+            <div class="section-label" style="color:var(--accent);">Think of it like...</div>
+            <p id="sbAnalogy"></p>
+          </div>
+          <div>
+            <div class="section-label" style="color:var(--precursor-text);">Required Precursors (What builds this)</div>
+            <div class="relation-pills" id="sbPrecursors"></div>
+          </div>
+          <div>
+            <div class="section-label" style="color:var(--enabler-text);">Downstream Enablers (What this unlocks)</div>
+            <div class="relation-pills" id="sbEnablers"></div>
+          </div>
+          <div>
+            <button class="graph-link-btn compare-btn" id="sbCompareBtn" onclick="toggleCompare(activeNodeId)">+ Compare</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <div class="cmp-tray" id="cmpTray" role="region" aria-label="Terms selected to compare">
+    <div class="cmp-tray-top">
+      <span class="cmp-count" id="cmpCount"></span>
+      <div class="cmp-chips" id="cmpChips"></div>
+    </div>
+    <div class="cmp-tray-actions">
+      <button class="cmp-clear" onclick="clearCompare()">Clear</button>
+      <button class="cmp-ask" id="cmpAskBtn" onclick="openCompareModal()">Compare</button>
+    </div>
+  </div>
+
+  <div class="cmp-overlay" id="cmpOverlay" role="dialog" aria-modal="true" aria-labelledby="cmpTitle">
+    <div class="cmp-modal">
+      <button class="welcome-close" onclick="closeCompareModal()" aria-label="Close">&times;</button>
+      <h2 id="cmpTitle">Compare these terms</h2>
+      <p class="cmp-sub">Choose what to include, copy the prompt, then paste it into any AI assistant to get a short explanation of how your selected terms relate.</p>
+      <div class="cmp-focus">
+        <label><input type="checkbox" checked onchange="cmpFocus.similar=this.checked;renderComparePrompt()"> How they&rsquo;re similar</label>
+        <label><input type="checkbox" checked onchange="cmpFocus.differ=this.checked;renderComparePrompt()"> How they differ</label>
+        <label><input type="checkbox" checked onchange="cmpFocus.flow=this.checked;renderComparePrompt()"> How they flow (what comes first)</label>
+        <label><input type="checkbox" checked onchange="cmpFocus.interlink=this.checked;renderComparePrompt()"> How they interlink in a typical real-world setup</label>
+      </div>
+      <textarea class="cmp-prompt" id="cmpPrompt" aria-label="Prompt to paste into an AI assistant"></textarea>
+      <div class="cmp-modal-actions">
+        <button class="cmp-secondary" onclick="copyPrompt()">Copy prompt</button>
+        <button class="cmp-primary" id="cmpOpenAssistant" onclick="copyAndOpenAssistant()">Copy &amp; open</button>
+      </div>
+      <p class="cmp-hint">Paste the prompt into the AI assistant of your choice. You can edit the text first. Its answer is a starting point too, so double-check it against trusted sources.</p>
+    </div>
+  </div>
+  <div class="cmp-toast" id="cmpToast" role="status"></div>
+
+  <script>
+    // Glossary data (filled in by build.py)
+    const glossaryData = [{"id": "schema", "term": "Schema", "category": "Data & Analytics", "eli5": "The agreed shape of data: which fields exist, what type each one is, and how tables relate.", "analogy": "Like the blank boxes on a registration form: a fixed place for name, date and phone number.", "precursors": [], "enables": ["etl", "data_quality"], "related": ["json"]}, {"id": "etl", "term": "ETL (Extract, Transform, Load)", "category": "Data & Analytics", "eli5": "Pulls data out of its sources, tidies and reshapes it, then loads it somewhere people can use it.", "analogy": "Like gathering supplies from several shops, sorting them at home, then putting everything on one shelf.", "precursors": ["schema"], "enables": ["data_warehouse"], "related": ["data_pipeline"]}, {"id": "data_pipeline", "term": "Data Pipeline", "category": "Data & Analytics", "eli5": "An automated route that moves data from one place to another, often cleaning it along the way.", "analogy": "Like a water network carrying water from the reservoir to every tap, with filters on the route.", "precursors": [], "enables": ["data_lineage"], "related": ["etl", "message_queue"]}, {"id": "data_warehouse", "term": "Data Warehouse", "category": "Data & Analytics", "eli5": "A central store of cleaned, organized data built for reporting and analysis.", "analogy": "Like an archive room where every box is labelled and sorted, ready for researchers.", "precursors": ["etl"], "enables": [], "related": ["data_lake", "data_catalog"]}, {"id": "data_lake", "term": "Data Lake", "category": "Data & Analytics", "eli5": "A large store that keeps raw data in its original form until someone needs it.", "analogy": "Like a real lake that collects water from many streams before anyone decides how to use it.", "precursors": [], "enables": [], "related": ["data_warehouse"]}, {"id": "data_quality", "term": "Data Quality", "category": "Data & Analytics", "eli5": "How accurate, complete, consistent and up to date a set of data is.", "analogy": "Like proofreading a document before sending it: mistakes are cheaper to catch early.", "precursors": ["schema"], "enables": [], "related": ["data_lineage"]}, {"id": "data_lineage", "term": "Data Lineage", "category": "Data & Analytics", "eli5": "A record of where data came from and every step that changed it on the way.", "analogy": "Like the paper trail behind an antique, listing each owner and repair.", "precursors": ["data_pipeline"], "enables": [], "related": ["data_quality", "data_catalog"]}, {"id": "data_catalog", "term": "Data Catalog", "category": "Data & Analytics", "eli5": "A searchable index that says what data exists, what it means and who owns it.", "analogy": "Like a library catalogue that tells you which books exist and which shelf holds them.", "precursors": [], "enables": [], "related": ["data_warehouse", "data_lineage"]}, {"id": "cloud_computing", "term": "Cloud Computing", "category": "Cloud & Infrastructure", "eli5": "Renting computing power, storage and software over the internet instead of owning the hardware.", "analogy": "Like drawing electricity from the grid instead of running your own generator.", "precursors": [], "enables": ["virtual_machine", "serverless"], "related": []}, {"id": "virtual_machine", "term": "Virtual Machine (VM)", "category": "Cloud & Infrastructure", "eli5": "A computer made of software that runs inside a real one, with its own operating system.", "analogy": "Like an apartment block: one building, many separate homes, each with its own lock.", "precursors": ["cloud_computing"], "enables": ["container"], "related": []}, {"id": "container", "term": "Container", "category": "Cloud & Infrastructure", "eli5": "A lightweight package holding an app and everything it needs, so it runs the same anywhere.", "analogy": "Like a shipping container: whatever is inside, it fits any ship, truck or crane.", "precursors": ["virtual_machine"], "enables": ["kubernetes"], "related": ["microservices"]}, {"id": "kubernetes", "term": "Kubernetes", "category": "Cloud & Infrastructure", "eli5": "A system that starts, stops, scales and repairs containers across many machines automatically.", "analogy": "Like an air traffic controller assigning planes to runways and rerouting when one is blocked.", "precursors": ["container"], "enables": [], "related": ["load_balancer", "high_availability"]}, {"id": "load_balancer", "term": "Load Balancer", "category": "Cloud & Infrastructure", "eli5": "Spreads incoming requests across several servers so none of them gets overwhelmed.", "analogy": "Like a host at a busy cafe sending each new group to the table with the shortest wait.", "precursors": [], "enables": ["high_availability"], "related": ["scalability", "kubernetes"]}, {"id": "cdn", "term": "Content Delivery Network (CDN)", "category": "Cloud & Infrastructure", "eli5": "A worldwide network of servers that keep copies of content close to each user.", "analogy": "Like branch libraries holding popular books so nobody has to travel to the main building.", "precursors": ["cache"], "enables": [], "related": ["load_balancer"]}, {"id": "serverless", "term": "Serverless", "category": "Cloud & Infrastructure", "eli5": "A way to run code where the provider manages the servers and you pay only while your code runs.", "analogy": "Like taking a taxi instead of owning a car: you pay only for the trip.", "precursors": ["cloud_computing"], "enables": [], "related": ["event_driven"]}, {"id": "infrastructure_as_code", "term": "Infrastructure as Code", "category": "Cloud & Infrastructure", "eli5": "Describing servers and networks in text files so scripts can create and change them reliably.", "analogy": "Like an architect's blueprint that lets builders put up identical houses again and again.", "precursors": ["version_control"], "enables": [], "related": ["ci_cd", "cloud_computing"]}, {"id": "version_control", "term": "Version Control", "category": "Engineering & DevOps", "eli5": "A tool that records every change to files, so you can compare, undo and work in parallel.", "analogy": "Like the history panel of a shared document, but built for code.", "precursors": [], "enables": ["code_review", "ci_cd", "infrastructure_as_code", "rollback", "branch"], "related": ["branch"]}, {"id": "code_review", "term": "Code Review", "category": "Engineering & DevOps", "eli5": "Teammates read a proposed change before it is merged, to catch mistakes and share knowledge.", "analogy": "Like an editor reading a draft before it goes to print.", "precursors": ["version_control"], "enables": [], "related": ["unit_test", "rfc"]}, {"id": "unit_test", "term": "Unit Test", "category": "Engineering & DevOps", "eli5": "A small automated check that one piece of code does what it should.", "analogy": "Like trying each light switch in a house before turning the main power on.", "precursors": [], "enables": ["ci_cd", "refactoring"], "related": ["code_review", "bug"]}, {"id": "ci_cd", "term": "CI/CD", "category": "Engineering & DevOps", "eli5": "Automatically building, testing and releasing code every time it changes.", "analogy": "Like a conveyor belt with inspection stations between the raw parts and the loading dock.", "precursors": ["version_control", "unit_test"], "enables": ["staging_environment"], "related": ["rollback"]}, {"id": "staging_environment", "term": "Staging Environment", "category": "Engineering & DevOps", "eli5": "A near-copy of the live system where changes are tried out before real users see them.", "analogy": "Like a dress rehearsal on the real stage before opening night.", "precursors": ["ci_cd"], "enables": [], "related": ["rollback", "feature_flag", "sandbox"]}, {"id": "feature_flag", "term": "Feature Flag", "category": "Engineering & DevOps", "eli5": "A switch that turns a feature on or off without shipping new code.", "analogy": "Like a wall switch for one room: you can test the lights without rewiring the house.", "precursors": [], "enables": [], "related": ["rollback", "staging_environment"]}, {"id": "rollback", "term": "Rollback", "category": "Engineering & DevOps", "eli5": "Returning a system to its last known working version after a bad release.", "analogy": "Like pressing undo right after a wrong edit.", "precursors": ["version_control"], "enables": [], "related": ["ci_cd", "incident_response"]}, {"id": "technical_debt", "term": "Technical Debt", "category": "Engineering & DevOps", "eli5": "The future cost of the quick shortcuts taken in code or design today.", "analogy": "Like skipping a car's servicing: you save time now and pay more later.", "precursors": [], "enables": [], "related": ["refactoring"]}, {"id": "refactoring", "term": "Refactoring", "category": "Engineering & DevOps", "eli5": "Cleaning up the structure of code without changing what it does.", "analogy": "Like reorganizing a toolbox so the same tools are easier to find.", "precursors": ["unit_test"], "enables": [], "related": ["technical_debt"]}, {"id": "monolith", "term": "Monolith", "category": "Architecture", "eli5": "An application built and deployed as one single unit.", "analogy": "Like one large building that houses every department under the same roof.", "precursors": [], "enables": [], "related": ["microservices"]}, {"id": "microservices", "term": "Microservices", "category": "Architecture", "eli5": "An application split into small, independent services that each do one job.", "analogy": "Like a high street of small specialist shops instead of one giant department store.", "precursors": ["api"], "enables": [], "related": ["monolith", "container", "event_driven", "loose_coupling"]}, {"id": "event_driven", "term": "Event-Driven Architecture", "category": "Architecture", "eli5": "Parts of a system react when something happens, instead of being called directly.", "analogy": "Like a doorbell: whoever is home responds when it rings, and nobody waits at the door.", "precursors": ["message_queue"], "enables": [], "related": ["microservices", "serverless", "webhook"]}, {"id": "scalability", "term": "Scalability", "category": "Architecture", "eli5": "How well a system keeps working as the amount of demand grows.", "analogy": "Like a road that can add lanes as traffic builds up.", "precursors": [], "enables": [], "related": ["load_balancer", "microservices"]}, {"id": "loose_coupling", "term": "Loose Coupling", "category": "Architecture", "eli5": "Designing parts so each one depends on the others as little as possible.", "analogy": "Like Lego bricks: swap one piece without rebuilding the whole model.", "precursors": ["api"], "enables": [], "related": ["microservices", "event_driven"]}, {"id": "rfc", "term": "Request for Comments (RFC)", "category": "Architecture", "eli5": "A written proposal shared early so others can review and improve a design.", "analogy": "Like showing neighbours a draft floor plan before you start building.", "precursors": [], "enables": ["adr"], "related": ["code_review"]}, {"id": "adr", "term": "Architecture Decision Record (ADR)", "category": "Architecture", "eli5": "A short note capturing a design decision, the options considered and why one was chosen.", "analogy": "Like a ship captain's log entry explaining why the course was changed.", "precursors": ["rfc"], "enables": [], "related": ["tech_stack"]}, {"id": "tech_stack", "term": "Tech Stack", "category": "Architecture", "eli5": "The set of languages, frameworks and tools a product is built with.", "analogy": "Like the tools and materials in a workshop: they shape what you can make.", "precursors": [], "enables": [], "related": ["adr", "infrastructure_as_code"]}, {"id": "authentication", "term": "Authentication", "category": "Security & Identity", "eli5": "Proving who you are.", "analogy": "Like showing your ID at the door.", "precursors": [], "enables": ["authorization", "sso", "mfa", "token"], "related": []}, {"id": "authorization", "term": "Authorization", "category": "Security & Identity", "eli5": "Deciding what a person who has been identified is allowed to do.", "analogy": "Like a hotel key card that opens your room but not anyone else's.", "precursors": ["authentication"], "enables": ["oauth", "least_privilege"], "related": ["least_privilege", "oauth"]}, {"id": "sso", "term": "Single Sign-On (SSO)", "category": "Security & Identity", "eli5": "Signing in once to reach many apps, without logging in separately each time.", "analogy": "Like a festival wristband that is checked at every gate after one registration.", "precursors": ["authentication"], "enables": [], "related": ["oauth", "mfa"]}, {"id": "mfa", "term": "Multi-Factor Authentication (MFA)", "category": "Security & Identity", "eli5": "Using two or more proofs of identity, such as a password plus a code from your phone.", "analogy": "Like a safe that needs both a key and a combination.", "precursors": ["authentication"], "enables": [], "related": ["sso"]}, {"id": "oauth", "term": "OAuth", "category": "Security & Identity", "eli5": "A standard that lets one app act for you in another without ever seeing your password.", "analogy": "Like a valet key that starts the car but does not open the trunk.", "precursors": ["authorization"], "enables": [], "related": ["token", "sso", "api"]}, {"id": "encryption", "term": "Encryption", "category": "Security & Identity", "eli5": "Scrambling data so that only someone with the right key can read it.", "analogy": "Like writing a letter in a code only you and the reader know.", "precursors": [], "enables": ["secrets_management"], "related": []}, {"id": "least_privilege", "term": "Least Privilege", "category": "Security & Identity", "eli5": "Giving people and systems only the access they need, and no more.", "analogy": "Like giving a cleaner the key to one floor instead of the whole building.", "precursors": ["authorization"], "enables": [], "related": ["secrets_management"]}, {"id": "secrets_management", "term": "Secrets Management", "category": "Security & Identity", "eli5": "Storing passwords, keys and tokens safely, outside of code and chat messages.", "analogy": "Like keeping keys in a locked cabinet instead of on a sticky note.", "precursors": ["encryption"], "enables": [], "related": ["least_privilege", "token"]}, {"id": "monitoring", "term": "Monitoring", "category": "Reliability & Operations", "eli5": "Watching a system's health through measurements and alerts, so problems are noticed quickly.", "analogy": "Like a car dashboard showing speed, fuel and warning lights.", "precursors": [], "enables": ["slo", "incident_response", "observability"], "related": []}, {"id": "observability", "term": "Observability", "category": "Reliability & Operations", "eli5": "How well you can tell what is happening inside a system from the signals it gives out.", "analogy": "Like a doctor using temperature and test results to diagnose without opening you up.", "precursors": ["monitoring"], "enables": [], "related": ["incident_response"]}, {"id": "slo", "term": "Service Level Objective (SLO)", "category": "Reliability & Operations", "eli5": "An internal target for how well a service should perform, such as 99.9% uptime.", "analogy": "Like a runner's personal-best goal for each race.", "precursors": ["monitoring"], "enables": ["sla"], "related": []}, {"id": "sla", "term": "Service Level Agreement (SLA)", "category": "Reliability & Operations", "eli5": "A promise to customers about service levels, often with consequences if it is missed.", "analogy": "Like a delivery promise: arrives in two days or you get your money back.", "precursors": ["slo"], "enables": [], "related": ["mttr"]}, {"id": "incident_response", "term": "Incident Response", "category": "Reliability & Operations", "eli5": "The steps a team follows to spot, fix and communicate about a service problem.", "analogy": "Like a fire drill: when the alarm sounds, everyone knows their role.", "precursors": ["monitoring"], "enables": ["postmortem", "mttr"], "related": ["rollback"]}, {"id": "postmortem", "term": "Postmortem", "category": "Reliability & Operations", "eli5": "A blame-free review after an incident to learn what happened and how to prevent it.", "analogy": "Like a sports team watching the match footage to play better next time.", "precursors": ["incident_response"], "enables": [], "related": []}, {"id": "mttr", "term": "Mean Time to Recovery (MTTR)", "category": "Reliability & Operations", "eli5": "The average time it takes to restore service after something breaks.", "analogy": "Like measuring how long a garage takes to get your car back on the road.", "precursors": ["incident_response"], "enables": [], "related": ["sla"]}, {"id": "high_availability", "term": "High Availability", "category": "Reliability & Operations", "eli5": "Designing a service so it stays up even when parts of it fail.", "analogy": "Like a hospital with backup generators, so the lights stay on in a power cut.", "precursors": ["load_balancer"], "enables": [], "related": ["disaster_recovery", "kubernetes"]}, {"id": "disaster_recovery", "term": "Disaster Recovery", "category": "Reliability & Operations", "eli5": "The plan and tools for restoring a service after a major failure, such as losing a data center.", "analogy": "Like keeping copies of important papers in a safe at a different address.", "precursors": [], "enables": [], "related": ["high_availability"]}, {"id": "circuit_breaker", "term": "Circuit Breaker", "category": "Reliability & Operations", "eli5": "A pattern that stops calling a failing service for a while, so the failure does not spread.", "analogy": "Like a fuse in a house that trips to protect the wiring.", "precursors": [], "enables": [], "related": ["rate_limiting", "high_availability"]}, {"id": "api", "term": "API", "category": "Integration & APIs", "eli5": "A defined way for one piece of software to ask another to do something or share data.", "analogy": "Like a wall socket: a standard shape that lets any matching plug connect.", "precursors": [], "enables": ["rest_api", "webhook", "api_gateway", "microservices", "loose_coupling"], "related": []}, {"id": "rest_api", "term": "REST API", "category": "Integration & APIs", "eli5": "A common style of API that uses web addresses and simple actions like GET and POST.", "analogy": "Like the postal service: write an address, pick an action, and receive a reply.", "precursors": ["api"], "enables": [], "related": ["json", "webhook"]}, {"id": "json", "term": "JSON", "category": "Integration & APIs", "eli5": "A lightweight text format for sending structured data between systems.", "analogy": "Like a neatly labelled list both sides can read: name, age, city.", "precursors": [], "enables": [], "related": ["rest_api", "schema"]}, {"id": "webhook", "term": "Webhook", "category": "Integration & APIs", "eli5": "An automatic message one system sends to another the moment something happens.", "analogy": "Like a doorbell camera alerting your phone the second someone arrives, so you do not keep checking.", "precursors": ["api"], "enables": [], "related": ["event_driven", "rest_api"]}, {"id": "api_gateway", "term": "API Gateway", "category": "Integration & APIs", "eli5": "A single front door that receives API requests, checks them and routes them to the right service.", "analogy": "Like a reception desk that checks visitors and points them to the right floor.", "precursors": ["api"], "enables": [], "related": ["rate_limiting", "microservices"]}, {"id": "message_queue", "term": "Message Queue", "category": "Integration & APIs", "eli5": "A waiting line that holds messages until the receiver is ready to handle them.", "analogy": "Like a mailbox where letters wait until the recipient comes to collect them.", "precursors": [], "enables": ["event_driven"], "related": ["idempotency"]}, {"id": "rate_limiting", "term": "Rate Limiting", "category": "Integration & APIs", "eli5": "Capping how many requests a user or app can make in a given amount of time.", "analogy": "Like a turnstile that lets in a few people a minute to prevent a crush.", "precursors": [], "enables": [], "related": ["api_gateway", "circuit_breaker"]}, {"id": "idempotency", "term": "Idempotency", "category": "Integration & APIs", "eli5": "An action that gives the same result no matter how many times you repeat it.", "analogy": "Like pressing an elevator call button twice: the lift is still called only once.", "precursors": [], "enables": [], "related": ["message_queue", "rest_api"]}, {"id": "branch", "term": "Branch", "category": "Dual-Meaning Terms", "eli5": "Everyday: part of a tree. In tech: a separate copy of the code where you can work without touching the main version.", "analogy": "Like drafting edits on a photocopy before merging them into the master.", "precursors": ["version_control"], "enables": [], "related": []}, {"id": "cache", "term": "Cache", "category": "Dual-Meaning Terms", "eli5": "Everyday: a hidden store of supplies. In tech: a fast, temporary store of data you used recently.", "analogy": "Like keeping your most-used tools on the desk instead of in the garage.", "precursors": [], "enables": ["cdn"], "related": []}, {"id": "cookie", "term": "Cookie", "category": "Dual-Meaning Terms", "eli5": "Everyday: a biscuit. In tech: a small file a website saves in your browser to remember you.", "analogy": "Like a hand stamp at the entrance, so you are not asked for a ticket again.", "precursors": [], "enables": [], "related": ["token", "authentication"]}, {"id": "bug", "term": "Bug", "category": "Dual-Meaning Terms", "eli5": "Everyday: an insect. In tech: a flaw in software that makes it behave in an unintended way.", "analogy": "Like a typo in a recipe: the dish still cooks, just not as planned.", "precursors": [], "enables": [], "related": ["unit_test"]}, {"id": "thread", "term": "Thread", "category": "Dual-Meaning Terms", "eli5": "Everyday: a strand of cotton or a chain of messages. In tech: one path of instructions a program follows, with several running at once.", "analogy": "Like several people reading different chapters of the same book at the same time.", "precursors": [], "enables": [], "related": []}, {"id": "token", "term": "Token", "category": "Dual-Meaning Terms", "eli5": "Everyday: a coin or voucher. In tech: a small digital pass that proves you are allowed in.", "analogy": "Like a cloakroom ticket: show it to get your coat back without explaining who you are.", "precursors": ["authentication"], "enables": [], "related": ["oauth", "cookie", "secrets_management"]}, {"id": "sandbox", "term": "Sandbox", "category": "Dual-Meaning Terms", "eli5": "Everyday: a children's sand pit. In tech: an isolated space to try software safely without affecting real systems.", "analogy": "Like a practice pitch where any mistake stays on the pitch.", "precursors": [], "enables": [], "related": ["staging_environment"]}, {"id": "ticket", "term": "Ticket", "category": "Dual-Meaning Terms", "eli5": "Everyday: an entry pass. In tech: a record of a task or issue assigned to someone to resolve.", "analogy": "Like a numbered slip at a repair shop that tracks your item from drop-off to pickup.", "precursors": [], "enables": [], "related": ["incident_response"]}];
+    const categoryColors = {"Data & Analytics": "#a3d94a", "Cloud & Infrastructure": "#4aa8ff", "Engineering & DevOps": "#f59f00", "Architecture": "#c084fc", "Security & Identity": "#f87171", "Reliability & Operations": "#2dd4bf", "Integration & APIs": "#fb923c", "Dual-Meaning Terms": "#facc15"};
+    const byId = Object.fromEntries(glossaryData.map(i => [i.id, i]));
+    // Resolve a reference to a real node id (handles a few near-miss ids); returns null if no entry exists
+    const resolveId = id => byId[id] ? id : null;
+    const nameOf = id => {
+      const r = resolveId(id);
+      return r ? byId[r].term : id.replace(/_/g, ' ');
+    };
+    const pillAttrs = (id, clickFn) => {
+      const r = resolveId(id);
+      return r ? `onclick="${clickFn}('${r}')"` : 'style="opacity:.55;cursor:default" title="No glossary entry yet"';
+    };
+
+    let currentCategory = 'All';
+    let activeNodeId = null;
+
+    // Tab Switching
+    function switchTab(tabName) {
+      unfocusCard();
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+
+      if (tabName === 'search') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('search-tab').classList.add('active');
+      } else if (tabName === 'quiz') {
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('quiz-tab').classList.add('active');
+        qzHome();
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('graph-tab').classList.add('active');
+        setTimeout(() => {
+          resizeCanvas();
+          if (activeNodeId) {
+            selectNode(activeNodeId);
+          }
+        }, 50);
+      }
+    }
+
+    // Render Cards in Search Tab
+    function renderCards(data) {
+      const grid = document.getElementById('cardsGrid');
+      unfocusCard();
+      grid.innerHTML = '';
+
+      if (data.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--text-muted);">No matching terms found.</div>`;
+        return;
+      }
+
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.id = `card-${item.id}`;
+
+        const precursorsHtml = item.precursors.map(p => `<span class="pill pill-precursor" ${pillAttrs(p, 'filterById')}>${nameOf(p)}</span>`).join('');
+        const enablersHtml = item.enables.map(e => `<span class="pill pill-enabler" ${pillAttrs(e, 'filterById')}>${nameOf(e)}</span>`).join('');
+
+        card.innerHTML = `
+          <div class="card-header">
+            <h2 class="card-title"><span class="card-art">${artFor(item)}</span>${item.term}</h2>
+            <span class="card-badge">${item.category}</span>
+          </div>
+          <div>
+            <div class="section-label">Definition</div>
+            <p class="definition-text">${item.eli5}</p>
+            <button class="graph-link-btn compare-btn" data-cmp="${item.id}" onclick="toggleCompare('${item.id}')">+ Compare</button><button class="graph-link-btn" onclick="navigateToGraph('${item.id}')">→ 🌐 Graph</button>
+          </div>
+          <div class="analogy-box" data-art="${artFor(item)}">
+            <div class="section-label" style="color:var(--accent);">Think of it like...</div>
+            <p>${item.analogy}</p>
+          </div>
+          <div class="relation-block">
+            <div class="section-label" style="color:var(--precursor-text);">Precursors & Dependencies</div>
+            <div class="relation-pills">${precursorsHtml}</div>
+          </div>
+          <div class="relation-block">
+            <div class="section-label" style="color:var(--enabler-text);">Downstream Enablers</div>
+            <div class="relation-pills">${enablersHtml}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      refreshCompareUI();
+    }
+
+    // Search and Filtering
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const filtered = glossaryData.filter(item => {
+        const matchesCategory = (currentCategory === 'All' || item.category === currentCategory);
+        const matchesQuery = item.term.toLowerCase().includes(query) ||
+                             item.eli5.toLowerCase().includes(query) ||
+                             item.analogy.toLowerCase().includes(query) ||
+                             item.precursors.some(p => nameOf(p).toLowerCase().includes(query)) ||
+                             item.enables.some(e => nameOf(e).toLowerCase().includes(query));
+        return matchesCategory && matchesQuery;
+      });
+      renderCards(filtered);
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.chip').forEach(c => {
+        c.classList.toggle('active', c.innerText === cat);
+      });
+      handleSearch();
+    }
+
+    function filterById(id) { filterByTerm(byId[id].term); }
+
+    function filterByTerm(term) {
+      document.getElementById('searchInput').value = term;
+      filterCategory('All');
+    }
+
+    // Direct Route to Graph Tab
+    function navigateToGraph(id) {
+      activeNodeId = id;
+      switchTab('graph');
+      setTimeout(() => {
+        selectNode(id);
+        const node = nodes.find(n => n.id === id);
+        if (node) {
+          panX = canvas.width / 2 - node.x * zoomScale;
+          panY = canvas.height / 2 - node.y * zoomScale;
+        }
+      }, 100);
+    }
+
+    // -------------------------------------------------------------
+    // ZERO-DEPENDENCY NATIVE HTML5 CANVAS INTERACTIVE GRAPH
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('graphCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let nodes = [];
+    let edges = [];
+    let zoomScale = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let dragNode = null;
+    let startX, startY;
+
+    // Build Graph Model from glossaryData (real entries + "ghost" nodes for referenced-but-undefined terms)
+    let showGhosts = true, frameCount = 0, userMoved = false;
+    let alpha = 1;           // simulation "heat" - cools down so the layout settles
+    let hoverNode = null;
+
+    function initGraphData() {
+      const nodeMap = new Map();
+      const addNode = (id, label, item) => {
+        if (!nodeMap.has(id)) {
+          const ang = Math.random() * Math.PI * 2;
+          const r = 80 + Math.random() * 260;
+          nodeMap.set(id, { id, label, item, ghost: !item, category: item ? item.category : '',
+            x: Math.cos(ang) * r, y: Math.sin(ang) * r, vx: 0, vy: 0, deg: 0, radius: 5 });
+        }
+        return nodeMap.get(id);
+      };
+      glossaryData.forEach(it => addNode(it.id, it.term, it));
+      const ref = rid => {
+        const r = resolveId(rid) || rid;
+        return addNode(r, nameOf(r), byId[r] || null);
+      };
+
+      edges = [];
+      const seenDir = new Set(), seenPair = new Set();
+      const addDirected = (src, tgt) => {
+        if (src === tgt) return;
+        const k = src.id + '>' + tgt.id;
+        if (seenDir.has(k)) return;
+        seenDir.add(k); seenPair.add([src.id, tgt.id].sort().join('|'));
+        edges.push({ source: src, target: tgt, type: 'flow' });
+      };
+      glossaryData.forEach(it => {
+        const me = nodeMap.get(it.id);
+        it.enables.forEach(t => addDirected(me, ref(t)));
+        it.precursors.forEach(pr => addDirected(ref(pr), me));
+      });
+      glossaryData.forEach(it => {
+        const me = nodeMap.get(it.id);
+        (it.related || []).forEach(rr => {
+          const other = ref(rr);
+          const k = [me.id, other.id].sort().join('|');
+          if (me === other || seenPair.has(k)) return;
+          seenPair.add(k);
+          edges.push({ source: me, target: other, type: 'related' });
+        });
+      });
+
+      nodes = [...nodeMap.values()];
+      edges.forEach(e => { e.source.deg++; e.target.deg++; });
+      nodes.forEach(n => { n.radius = 4 + Math.sqrt(n.deg) * 2.6; });
+      alpha = 1;
+    }
+
+    function fitZoom() {
+      zoomScale = Math.min(0.9, canvas.height / 820, canvas.width / 760);
+    }
+
+    function resizeCanvas() {
+      const wrapper = canvas.parentElement;
+      canvas.width = wrapper.clientWidth;
+      canvas.height = wrapper.clientHeight;
+      if (!canvas.width || !canvas.height) return; // graph tab is hidden, nothing to size yet
+      if (!userMoved) {
+        panX = canvas.width / 2;
+        panY = canvas.height / 2;
+        fitZoom();
+        if (frameCount >= 200) fitToView(); // layout already settled while the tab was hidden
+      }
+    }
+
+    // Force simulation: repulsion + link springs + gentle centre pull, cooling over time
+    function simulate() {
+      if (alpha < 0.01 && !dragNode) return;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          let dx = b.x - a.x, dy = b.y - a.y;
+          let d2 = dx * dx + dy * dy || 1;
+          if (d2 > 90000) continue;
+          const d = Math.sqrt(d2);
+          const f = (2200 / d2) * alpha;
+          a.vx -= (dx / d) * f; a.vy -= (dy / d) * f;
+          b.vx += (dx / d) * f; b.vy += (dy / d) * f;
+        }
+      }
+      edges.forEach(e => {
+        const dx = e.target.x - e.source.x, dy = e.target.y - e.source.y;
+        const d = Math.sqrt(dx * dx + dy * dy) || 1;
+        const f = (d - 80) * 0.02 * alpha;
+        e.source.vx += (dx / d) * f; e.source.vy += (dy / d) * f;
+        e.target.vx -= (dx / d) * f; e.target.vy -= (dy / d) * f;
+      });
+      nodes.forEach(n => {
+        if (n === dragNode) return;
+        n.vx -= n.x * 0.004 * alpha;
+        n.vy -= n.y * 0.004 * alpha;
+        n.x += n.vx; n.y += n.vy;
+        n.vx *= 0.8; n.vy *= 0.8;
+      });
+      alpha *= 0.992;
+    }
+
+    const COLORS = {
+      node: '#a3d94a', ghost: '#7a7a7a', edge: 'rgba(170,170,170,0.28)', edgeDim: 'rgba(170,170,170,0.08)',
+      label: '#d6d6d6', labelDim: 'rgba(214,214,214,0.25)',
+      selected: '#4aa8ff', precursor: '#f59f00', enabler: '#38bdf8'
+    };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(panX, panY);
+      ctx.scale(zoomScale, zoomScale);
+
+      const focusId = activeNodeId || (hoverNode && hoverNode.id) || null;
+      const neighbours = new Set();
+      if (focusId) edges.forEach(e => {
+        if (e.source.id === focusId) neighbours.add(e.target.id);
+        if (e.target.id === focusId) neighbours.add(e.source.id);
+      });
+
+      // Edges
+      edges.forEach(e => {
+        if (!showGhosts && (e.source.ghost || e.target.ghost)) return;
+        let col = focusId ? COLORS.edgeDim : COLORS.edge, w = 1;
+        if (focusId && (e.source.id === focusId || e.target.id === focusId)) {
+          w = 2;
+          if (e.type === 'related') col = 'rgba(220,220,220,0.7)';
+          else col = (e.source.id === focusId) ? COLORS.enabler : COLORS.precursor;
+        }
+        ctx.beginPath();
+        ctx.moveTo(e.source.x, e.source.y);
+        ctx.lineTo(e.target.x, e.target.y);
+        ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke();
+      });
+
+      // Nodes + labels
+      nodes.forEach(n => {
+        if (n.ghost && !showGhosts) return;
+        const isFocus = n.id === focusId;
+        const near = neighbours.has(n.id);
+        const dim = focusId && !isFocus && !near;
+        let fill = n.ghost ? COLORS.ghost : (categoryColors[n.category] || COLORS.node);
+        if (activeNodeId === n.id) fill = COLORS.selected;
+        else if (activeNodeId && near) {
+          const isPre = edges.some(e => e.type === 'flow' && e.target.id === activeNodeId && e.source.id === n.id);
+          const isEn = edges.some(e => e.type === 'flow' && e.source.id === activeNodeId && e.target.id === n.id);
+          if (isPre) fill = COLORS.precursor; else if (isEn) fill = COLORS.enabler;
+        }
+        ctx.globalAlpha = dim ? 0.25 : 1;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        ctx.fillStyle = fill; ctx.fill();
+        if (isFocus) { ctx.lineWidth = 2; ctx.strokeStyle = '#ffffff'; ctx.stroke(); }
+        ctx.globalAlpha = 1;
+
+        ctx.font = '11px -apple-system, "Segoe UI", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = dim ? COLORS.labelDim : (isFocus ? '#ffffff' : COLORS.label);
+        if (isFocus || near || n.radius > 8 || zoomScale > 1.1) ctx.fillText(n.label, n.x, n.y + n.radius + 3);
+      });
+
+      ctx.restore();
+    }
+
+    function fitToView() {
+      const vis = nodes.filter(n => showGhosts || !n.ghost);
+      if (!vis.length) return;
+      const xs = vis.map(n => n.x), ys = vis.map(n => n.y);
+      const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+      const w = (maxX - minX) + 120, h = (maxY - minY) + 120;
+      zoomScale = Math.min(1.2, Math.max(0.25, Math.min(canvas.width / w, canvas.height / h)));
+      panX = canvas.width / 2 - ((minX + maxX) / 2) * zoomScale;
+      panY = canvas.height / 2 - ((minY + maxY) / 2) * zoomScale;
+    }
+
+    function animate() {
+      if (++frameCount === 200 && !userMoved && canvas.width) fitToView();
+      simulate();
+      draw();
+      requestAnimationFrame(animate);
+    }
+
+    // Node Selection & Sidebar
+    function selectNode(id) {
+      const node = nodes.find(n => n.id === id);
+      if (!node || node.ghost) return;
+      activeNodeId = id;
+
+      const item = node.item;
+      document.getElementById('sbTitle').innerText = artFor(item) + ' ' + item.term;
+      document.getElementById('sbBadge').innerText = item.category;
+      document.getElementById('sbDefinition').innerText = item.eli5;
+      document.getElementById('sbAnalogy').innerText = item.analogy;
+
+      const preContainer = document.getElementById('sbPrecursors');
+      preContainer.innerHTML = item.precursors.map(p => `<span class="pill pill-precursor" ${pillAttrs(p, 'selectNode')}>${nameOf(p)}</span>`).join('');
+
+      const enContainer = document.getElementById('sbEnablers');
+      enContainer.innerHTML = item.enables.map(e => `<span class="pill pill-enabler" ${pillAttrs(e, 'selectNode')}>${nameOf(e)}</span>`).join('');
+
+      document.getElementById('graphSidebar').classList.add('open');
+      refreshCompareUI();
+    }
+
+    function jumpToNodeByName(name) {
+      const match = nodes.find(n => n.item.term.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(n.item.term.toLowerCase()));
+      if (match) {
+        selectNode(match.id);
+      }
+    }
+
+    function closeSidebar() {
+      document.getElementById('graphSidebar').classList.remove('open');
+      activeNodeId = null;
+      refreshCompareUI();
+    }
+
+    function resetGraphView() {
+      userMoved = false; frameCount = 150;
+      closeSidebar();
+      alpha = Math.max(alpha, 0.3);
+    }
+
+    function zoomGraph(factor) {
+      userMoved = true;
+      zoomScale *= factor;
+      zoomScale = Math.min(Math.max(0.25, zoomScale), 2.5);
+    }
+
+    // Canvas Mouse Interactions
+    function worldPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      return { x: (e.clientX - rect.left - panX) / zoomScale, y: (e.clientY - rect.top - panY) / zoomScale };
+    }
+    function nodeAt(pos) {
+      let hit = null, best = Infinity;
+      nodes.forEach(n => {
+        if (n.ghost && !showGhosts) return;
+        const d = Math.hypot(n.x - pos.x, n.y - pos.y);
+        if (d <= Math.max(n.radius, 9) && d < best) { best = d; hit = n; }
+      });
+      return hit;
+    }
+
+    canvas.addEventListener('mousedown', e => {
+      userMoved = true;
+      dragNode = nodeAt(worldPos(e));
+      if (dragNode) {
+        selectNode(dragNode.id);
+        alpha = Math.max(alpha, 0.3);
+      } else {
+        isDragging = true;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+      }
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (dragNode) {
+        const p = worldPos(e);
+        dragNode.x = p.x; dragNode.y = p.y;
+        dragNode.vx = 0; dragNode.vy = 0;
+        alpha = Math.max(alpha, 0.3);
+      } else if (isDragging) {
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+      } else if (e.target === canvas) {
+        hoverNode = nodeAt(worldPos(e));
+        canvas.style.cursor = hoverNode ? 'pointer' : 'grab';
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => { hoverNode = null; });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      dragNode = null;
+    });
+
+    canvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoomGraph(e.deltaY < 0 ? 1.08 : 0.92);
+    });
+
+    // Initialize App
+    window.addEventListener('load', () => {
+      const cats = ['All', ...new Set(glossaryData.map(i => i.category))];
+      document.getElementById('categoryChips').innerHTML = cats.map(c =>
+        `<button class="chip${c === 'All' ? ' active' : ''}" onclick="filterCategory('${c.replace(/'/g, "\\'")}')">${c}</button>`).join('');
+      renderCards(glossaryData);
+      initGraphData();
+      resizeCanvas();
+      animate();
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+  
+    // Welcome pop-up
+    function closeWelcome(remember) {
+      document.getElementById('welcomeOverlay').classList.remove('show');
+      if (remember) { try { localStorage.setItem('jargonWelcomeSeen', '1'); } catch (e) {} }
+    }
+    window.addEventListener('load', () => {
+      let seen = false;
+      try { seen = localStorage.getItem('jargonWelcomeSeen') === '1'; } catch (e) {}
+      if (!seen) setTimeout(() => document.getElementById('welcomeOverlay').classList.add('show'), 400);
+    });
+    document.getElementById('welcomeOverlay').addEventListener('click', e => {
+      if (e.target.id === 'welcomeOverlay') closeWelcome();
+    });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeWelcome(); });
+  
+    // ---- Compare: select 2-5 terms and build a prompt for an AI assistant ----
+    const ASSISTANT_URL = ''; // optional: paste a chat link here to show a "Copy & open" button (leave '' to hide it)
+    const CMP_MIN = 2, CMP_MAX = 5;
+    let compareIds = [];
+    const cmpFocus = { similar: true, differ: true, flow: true, interlink: true };
+    const escHtml = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    function showToast(msg) {
+      const t = document.getElementById('cmpToast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function toggleCompare(id) {
+      if (!id || !byId[id]) return;
+      const i = compareIds.indexOf(id);
+      if (i >= 0) {
+        compareIds.splice(i, 1);
+      } else if (compareIds.length >= CMP_MAX) {
+        showToast('You can compare up to ' + CMP_MAX + ' terms. Remove one first.');
+        return;
+      } else {
+        compareIds.push(id);
+      }
+      refreshCompareUI();
+    }
+
+    function clearCompare() {
+      compareIds = [];
+      refreshCompareUI();
+    }
+
+    function refreshCompareUI() {
+      document.querySelectorAll('.card').forEach(c => c.classList.toggle('selected', compareIds.includes(c.id.replace(/^card-/, ''))));
+      document.querySelectorAll('.compare-btn[data-cmp]').forEach(b => {
+        const on = compareIds.includes(b.dataset.cmp);
+        b.classList.toggle('on', on);
+        b.textContent = on ? '\u2713 Selected' : '+ Compare';
+      });
+      const sb = document.getElementById('sbCompareBtn');
+      if (sb) {
+        sb.dataset.cmp = activeNodeId || '';
+        const on = !!activeNodeId && compareIds.includes(activeNodeId);
+        sb.classList.toggle('on', on);
+        sb.textContent = on ? '\u2713 Selected' : '+ Compare';
+      }
+      const tray = document.getElementById('cmpTray');
+      tray.classList.toggle('show', compareIds.length > 0);
+      document.getElementById('cmpCount').textContent =
+        compareIds.length + ' of ' + CMP_MAX + ' selected' + (compareIds.length < CMP_MIN ? ' (pick at least ' + CMP_MIN + ')' : '');
+      document.getElementById('cmpChips').innerHTML = compareIds.map(id =>
+        '<span class="cmp-chip">' + escHtml(byId[id].term) + '<button aria-label="Remove" onclick="toggleCompare(\'' + id + '\')">&times;</button></span>').join('');
+      document.getElementById('cmpAskBtn').disabled = compareIds.length < CMP_MIN;
+    }
+
+    function buildCompareText() {
+      const items = compareIds.map(id => byId[id]);
+      const names = a => (a && a.length) ? a.map(nameOf).join(', ') : 'none listed';
+      const L = [];
+      L.push("I'm new to a tech team. Using this Jargon Buster as a starting point, please write a short narrative that explains how these " + items.length + " terms relate to each other:");
+      L.push('');
+      items.forEach((it, i) => {
+        L.push((i + 1) + '. ' + it.term + ' (' + it.category + ')');
+        L.push('   - Plain English: ' + it.eli5);
+        L.push('   - Analogy: ' + it.analogy);
+        L.push('   - Builds on: ' + names(it.precursors));
+        L.push('   - Leads to: ' + names(it.enables));
+        L.push('   - Related: ' + names(it.related));
+      });
+      const links = [];
+      items.forEach(a => items.forEach(b => {
+        if (a.id !== b.id && ((a.enables || []).includes(b.id) || (b.precursors || []).includes(a.id))) links.push(a.term + ' leads to ' + b.term);
+      }));
+      items.forEach((a, i) => items.slice(i + 1).forEach(b => {
+        if ((a.related || []).includes(b.id) || (b.related || []).includes(a.id)) links.push(a.term + ' and ' + b.term + ' are listed as related');
+      }));
+      const uniq = [...new Set(links)];
+      if (uniq.length) {
+        L.push('');
+        L.push('Links already shown in the Jargon Buster between these terms:');
+        uniq.forEach(l => L.push('- ' + l));
+      }
+      const asks = [];
+      if (cmpFocus.similar) asks.push('How they are similar');
+      if (cmpFocus.differ) asks.push('How they differ');
+      if (cmpFocus.flow) asks.push('How they flow: what comes first and what depends on what');
+      if (cmpFocus.interlink) asks.push("How they interlink in a typical real-world setup");
+      L.push('');
+      if (asks.length) {
+        L.push('Please cover:');
+        asks.forEach(a => L.push('- ' + a));
+      } else {
+        L.push('Please explain how they relate to each other.');
+      }
+      L.push('');
+      L.push("Please keep it in plain English, with a simple real-world analogy that ties them together. The Jargon Buster is only a starting point and may be simplified, so use current official documentation where you can, and tell me if anything above looks wrong or out of date.");
+      return L.join('\n');
+    }
+
+    function renderComparePrompt() {
+      document.getElementById('cmpPrompt').value = buildCompareText();
+    }
+
+    function openCompareModal() {
+      if (compareIds.length < CMP_MIN) { showToast('Pick at least ' + CMP_MIN + ' terms first.'); return; }
+      renderComparePrompt();
+      document.getElementById('cmpOpenAssistant').style.display = ASSISTANT_URL ? '' : 'none';
+      document.getElementById('cmpOverlay').classList.add('show');
+    }
+
+    function closeCompareModal() {
+      document.getElementById('cmpOverlay').classList.remove('show');
+    }
+
+    // Copy synchronously (so a new tab can be opened in the same click without being blocked)
+    function copyNow() {
+      const ta = document.getElementById('cmpPrompt');
+      let ok = false;
+      ta.focus(); ta.select();
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      if (!ok && navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(ta.value).then(() => {}, () => {});
+        ok = true;
+      }
+      return ok;
+    }
+
+    function copyPrompt() {
+      const ok = copyNow();
+      showToast(ok ? 'Prompt copied. Paste it into your AI assistant.' : 'Text selected. Press Ctrl+C (or Cmd+C) to copy it.');
+    }
+
+    function copyAndOpenAssistant() {
+      const ok = copyNow();
+      if (ASSISTANT_URL) window.open(ASSISTANT_URL, '_blank', 'noopener');
+      showToast(ok ? 'Prompt copied. Paste it into your AI assistant.' : 'Select the text and press Ctrl+C (Cmd+C) to copy it.');
+    }
+
+    document.getElementById('cmpOverlay').addEventListener('click', e => { if (e.target.id === 'cmpOverlay') closeCompareModal(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeCompareModal(); });
+  
+    // ---- Quiz: every term is covered, grouped into packs by category ----
+    const QZ_KEY = 'jargonQuizV1', QZ_PACK = 8, QZ_SEQ = ['def', 'ana', 'pre', 'rev', 'nxt', 'ana', 'def', 'rev'];
+    let qzProg = { learned: {}, missed: {} };
+    try { Object.assign(qzProg, JSON.parse(localStorage.getItem(QZ_KEY) || '{}')); } catch (e) {}
+    const qzSave = () => { try { localStorage.setItem(QZ_KEY, JSON.stringify(qzProg)); } catch (e) {} };
+    const shuf = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    let QZ_PACKS = [], qz = null;
+
+    function qzBuildPacks() {
+      const g = {}; glossaryData.forEach(i => (g[i.category] = g[i.category] || []).push(i));
+      QZ_PACKS = [];
+      Object.keys(g).sort().forEach(c => {
+        const arr = g[c].slice().sort((a, b) => a.term.localeCompare(b.term));
+        const n = Math.max(1, Math.round(arr.length / QZ_PACK)), size = Math.ceil(arr.length / n);
+        for (let k = 0; k < n; k++) QZ_PACKS.push({ cat: c, n: k + 1, items: arr.slice(k * size, (k + 1) * size) });
+      });
+    }
+
+    function qzMask(txt, it) {
+      const names = [it.term.replace(/\s*\(.*?\)\s*/g, ' ').trim()].concat((it.term.match(/\(([^)]+)\)/) || []).slice(1));
+      names.forEach(n => { if (n.length > 2) txt = txt.replace(new RegExp('\\b' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi'), '____'); });
+      return txt;
+    }
+
+    function qzDistract(it, n, excl) {
+      const ok = x => x.id !== it.id && !(excl || []).includes(x.id);
+      return shuf(glossaryData.filter(x => ok(x) && x.category === it.category)).concat(shuf(glossaryData.filter(x => ok(x) && x.category !== it.category))).slice(0, n);
+    }
+
+    function qzMake(it, type) {
+      const known = [it.id].concat(it.precursors || [], it.enables || [], it.related || []);
+      const t = '<b>' + escHtml(it.term) + '</b>';
+      let kind = type, right = it, html = '', lead = '';
+      if (type === 'pre' || type === 'nxt') {
+        const l = (it[type === 'pre' ? 'precursors' : 'enables'] || []).filter(x => byId[x] && x !== it.id);
+        if (l.length) {
+          right = byId[shuf(l)[0]];
+          html = type === 'pre' ? 'Which term does ' + t + ' build on? <span style="font-weight:400">(something that usually comes before it)</span>' : 'Which term does ' + t + ' help unlock or lead to?';
+          lead = escHtml(it.term) + (type === 'pre' ? ' builds on ' : ' leads to ') + '<b>' + escHtml(right.term) + '</b>. ';
+        } else kind = 'def';
+      }
+      let pool;
+      if (kind === 'pre' || kind === 'nxt') pool = [right].concat(qzDistract(it, 3, known));
+      else pool = [it].concat(qzDistract(it, 3));
+      if (kind === 'def') html = 'Which term matches this description?<div class="qz-quote">' + escHtml(qzMask(it.eli5, it)) + '</div>';
+      if (kind === 'ana') html = 'Which term does this analogy describe?<div class="qz-quote">' + escHtml(qzMask(it.analogy, it)) + '</div>';
+      if (kind === 'rev') html = 'What does ' + t + ' mean?';
+      return {
+        it, html, right,
+        why: lead + artFor(right) + ' <b>' + escHtml(right.term) + '</b>: ' + escHtml(right.eli5) + '<br><i>Analogy: ' + escHtml(right.analogy) + '</i>',
+        opts: shuf(pool).map(x => ({ label: kind === 'rev' ? x.eli5 : x.term, ok: x.id === right.id }))
+      };
+    }
+
+    function qzStart(items, title) {
+      if (!items.length) { showToast('Nothing to play here yet.'); return; }
+      const off = Math.random() * QZ_SEQ.length | 0;
+      qz = { title, qs: shuf(items).map((it, i) => qzMake(it, QZ_SEQ[(i + off) % QZ_SEQ.length])), i: 0, score: 0, streak: 0, best: 0, missed: [], done: false };
+      qzQuestion();
+    }
+
+    function qzHome() {
+      qzBuildPacks();
+      const total = glossaryData.length, L = glossaryData.filter(i => qzProg.learned[i.id]).length;
+      const cats = {}; QZ_PACKS.forEach(p => (cats[p.cat] = cats[p.cat] || []).push(p));
+      let h = '<div class="qz-top"><h2>Test yourself</h2><p class="qz-sub">Every term is in a pack, so you can work through all ' + total + ' at your own pace. Answer correctly to mark a term as learned.</p>' +
+        '<div class="qz-bar"><i style="width:' + Math.round(100 * L / Math.max(1, total)) + '%"></i></div>' +
+        '<p class="qz-sub" style="margin:6px 0 0"><b>' + L + '</b> of ' + total + ' terms learned</p>' +
+        '<div class="qz-actions"><button class="qz-btn primary" onclick="qzMixed()">Mixed challenge (10)</button>' +
+        '<button class="qz-btn" onclick="qzReview()">Review my mistakes (' + Object.keys(qzProg.missed).filter(x => byId[x]).length + ')</button>' +
+        '<button class="qz-btn exam" onclick="exIntro()">&#127891; Mastery Exam' + (exBest() ? ' (best ' + exBest() + '%)' : '') + '</button><button class="qz-link" onclick="qzReset()">Reset progress</button></div></div>';
+      Object.keys(cats).forEach(c => {
+        const all = [].concat(...cats[c].map(p => p.items)), l = all.filter(i => qzProg.learned[i.id]).length;
+        h += '<div class="qz-cat"><div class="qz-cat-head">' + catArt(c) + ' ' + escHtml(c) + '<span>' + l + ' / ' + all.length + ' learned</span></div>' +
+          '<div class="qz-bar"><i style="width:' + Math.round(100 * l / all.length) + '%"></i></div><div class="qz-packs">' +
+          cats[c].map(p => {
+            const pl = p.items.filter(i => qzProg.learned[i.id]).length, idx = QZ_PACKS.indexOf(p);
+            return '<button class="qz-pack' + (pl === p.items.length ? ' done' : '') + '" onclick="qzPlayPack(' + idx + ')">Pack ' + p.n + ' &middot; ' + pl + '/' + p.items.length + '</button>';
+          }).join('') + '</div></div>';
+      });
+      document.getElementById('qzRoot').innerHTML = h;
+    }
+
+    function qzPlayPack(idx) { const p = QZ_PACKS[idx]; qzStart(p.items, p.cat + ' \u00b7 Pack ' + p.n); }
+    function qzMixed() {
+      const un = shuf(glossaryData.filter(i => !qzProg.learned[i.id])), rest = shuf(glossaryData.filter(i => qzProg.learned[i.id]));
+      qzStart(un.concat(rest).slice(0, 10), 'Mixed challenge');
+    }
+    function qzReview() {
+      const m = glossaryData.filter(i => qzProg.missed[i.id]);
+      if (!m.length) { showToast('No mistakes to review. Nice!'); return; }
+      qzStart(m.slice(0, 10), 'Review mistakes');
+    }
+    function qzReset() {
+      if (!confirm('Reset all quiz progress?')) return;
+      qzProg = { learned: {}, missed: {} }; qzSave(); qzHome();
+    }
+
+    function qzQuestion() {
+      const q = qz.qs[qz.i];
+      document.getElementById('qzRoot').innerHTML =
+        '<div class="qz-meta"><span>' + escHtml(qz.title) + ' &middot; Question ' + (qz.i + 1) + ' of ' + qz.qs.length + '</span><span>Score ' + qz.score + ' &middot; Streak ' + qz.streak + '</span></div>' +
+        '<div class="qz-bar" style="margin-bottom:14px"><i style="width:' + Math.round(100 * qz.i / qz.qs.length) + '%"></i></div>' +
+        '<div class="qz-card"><div class="qz-q">' + q.html + '</div>' +
+        q.opts.map((o, k) => '<button class="qz-opt" onclick="qzAnswer(' + k + ')">' + escHtml(o.label) + '</button>').join('') +
+        '<div id="qzFeedback"></div></div>';
+    }
+
+    function qzAnswer(k) {
+      const q = qz.qs[qz.i], ok = q.opts[k].ok, id = q.it.id;
+      document.querySelectorAll('.qz-opt').forEach((b, j) => { b.disabled = true; if (q.opts[j].ok) b.classList.add('ok'); else if (j === k) b.classList.add('bad'); });
+      if (ok) { qz.score++; qz.streak++; qz.best = Math.max(qz.best, qz.streak); qzProg.learned[id] = 1; delete qzProg.missed[id]; }
+      else { qz.streak = 0; qz.missed.push(q.it); qzProg.missed[id] = 1; delete qzProg.learned[id]; }
+      qzSave();
+      const last = qz.i === qz.qs.length - 1;
+      document.getElementById('qzFeedback').innerHTML =
+        qzReact(ok) + '<div class="qz-why"><b>' + (ok ? 'Correct!' : 'Not quite.') + '</b> ' + q.why + '</div>' +
+        '<div class="qz-actions"><button class="qz-btn primary" onclick="qzNext()">' + (last ? 'See results' : 'Next') + '</button>' +
+        '<button class="qz-btn compare-btn" data-cmp="' + q.right.id + '" onclick="toggleCompare(\'' + q.right.id + '\')">+ Compare</button></div>';
+      refreshCompareUI();
+    }
+
+    function qzNext() { qz.i++; if (qz.i >= qz.qs.length) qzResults(); else qzQuestion(); }
+
+    function qzResults() {
+      const n = qz.qs.length, pct = Math.round(100 * qz.score / n);
+      const msg = pct === 100 ? 'Perfect round!' : pct >= 70 ? 'Nice work.' : 'Good practice. Review the ones below and try again.';
+      document.getElementById('qzRoot').innerHTML =
+        '<div class="qz-card" style="text-align:center"><div class="qz-score">' + qz.score + ' / ' + n + '</div><p class="qz-sub">' + msg + ' Best streak: ' + qz.best + '</p>' +
+        (qz.missed.length ? '<div style="margin:14px 0 4px;text-align:left"><b>To revisit</b>' + qz.missed.map(it =>
+          '<div class="qz-miss"><b>' + escHtml(it.term) + '</b>: ' + escHtml(it.eli5) + '<br><i>' + escHtml(it.analogy) + '</i></div>').join('') + '</div>' : '') +
+        '<div class="qz-actions" style="justify-content:center"><button class="qz-btn primary" onclick="qzHome()">Back to packs</button>' +
+        (qz.missed.length > 1 ? '<button class="qz-btn" onclick="qzCompareMissed()">Compare the ones I missed</button>' : '') + '</div></div>';
+    }
+
+    function qzCompareMissed() {
+      compareIds = qz.missed.slice(0, CMP_MAX).map(i => i.id);
+      refreshCompareUI(); openCompareModal();
+    }
+  
+    // ---- Floating quiz window ----
+    function qzOpen() { const w = document.getElementById('qzWin'); w.classList.add('open'); w.classList.remove('min'); if (!document.getElementById('qzRoot').innerHTML) qzHome(); }
+    function qzClose() { document.getElementById('qzWin').classList.remove('open'); }
+    function qzMin() { document.getElementById('qzWin').classList.toggle('min'); }
+    (function () {
+      const w = document.getElementById('qzWin'), h = document.getElementById('qzHead'); let d = null;
+      h.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; const r = w.getBoundingClientRect(); d = { x: e.clientX - r.left, y: e.clientY - r.top }; h.setPointerCapture(e.pointerId); h.style.cursor = 'grabbing'; });
+      h.addEventListener('pointermove', e => { if (!d) return; w.style.left = Math.max(0, Math.min(innerWidth - 80, e.clientX - d.x)) + 'px'; w.style.top = Math.max(0, Math.min(innerHeight - 40, e.clientY - d.y)) + 'px'; w.style.right = 'auto'; });
+      h.addEventListener('pointerup', () => { d = null; h.style.cursor = ''; });
+    })();
+    const QZ_GOOD = ['Big brain energy! \ud83e\udde0', 'Nailed it! \ud83c\udfaf', 'Look at you go! \ud83d\ude80', 'Architect in the making! \ud83c\udfd7\ufe0f', "Chef's kiss! \ud83d\udc4c"];
+    const QZ_BAD = ['Oof, so close! \ud83d\ude05', 'Plot twist! \ud83c\udf2a\ufe0f', 'Even servers crash sometimes \ud83d\udd25', 'Brain buffering... \u23f3', 'Whoops! Learn and retry \ud83d\udc23'];
+    function qzReact(ok) {
+      if (!ok) { const c = document.querySelector('.qz-card'); c.classList.remove('qz-shake'); void c.offsetWidth; c.classList.add('qz-shake'); }
+      const a = ok ? QZ_GOOD : QZ_BAD;
+      return '<div class="qz-react">' + (ok && qz.streak >= 3 ? '\ud83d\udd25 ' + qz.streak + ' in a row!' : a[Math.random() * a.length | 0]) + '</div>';
+    }
+
+    // ---- Formal Mastery Exam (closed book, timed, pass/fail) ----
+    const EX_PASS = 70, EX_BEST = 'jargonExamBest';
+    let ex = null;
+    const exBest = () => { try { return localStorage.getItem(EX_BEST); } catch (e) { return null; } };
+    const exOv = () => document.getElementById('exOverlay');
+    function exIntro() {
+      const n = Math.min(30, glossaryData.length);
+      exOv().classList.add('on');
+      exOv().innerHTML = '<div class="ex-bar"><span>Jargon Buster</span><b>Mastery Examination</b><span></span></div><div class="ex-paper"><h1>Candidate Instructions</h1><p>This is a formal, closed-book assessment of the terms in the Jargon Buster.</p><ol>' +
+        '<li><b>' + n + ' questions</b>, multiple choice, one mark each.</li><li><b>Time allowed: ' + n + ' minutes.</b> The paper is submitted automatically when time expires.</li><li><b>Pass mark: ' + EX_PASS + '%.</b></li>' +
+        '<li>No use of the glossary, Search, Graph, practice quiz, AI assistants or any other aid.</li><li>Leaving this window or tab is recorded. After 3 departures the exam ends and is marked <b>void</b>.</li><li>Copying and right-click are disabled. You may change answers until you submit.</li></ol>' +
+        (exBest() ? '<p>Your best result so far: <b>' + exBest() + '%</b></p>' : '') +
+        '<label class="ex-honor"><input type="checkbox" onchange="document.getElementById(\'exGo\').disabled=!this.checked"> I will complete this examination without assistance.</label>' +
+        '<div class="ex-row"><button class="ex-btn ghost" onclick="exClose()">Cancel</button><button class="ex-btn" id="exGo" disabled onclick="exStart()">Begin examination</button></div></div>';
+    }
+    function exClose() { if (ex) { clearInterval(ex.timer); ex.done = true; } ex = null; exOv().classList.remove('on'); exOv().innerHTML = ''; }
+    function exStart() {
+      const n = Math.min(30, glossaryData.length);
+      ex = { qs: shuf(glossaryData).slice(0, n).map(it => ({ q: qzMake(it, QZ_SEQ[Math.random() * QZ_SEQ.length | 0]), sel: null })), i: 0, n, end: Date.now() + n * 60000, flags: 0, last: 0, done: false };
+      ex.timer = setInterval(exTick, 1000); exQ();
+    }
+    function exTick() {
+      if (!ex || ex.done) return;
+      const left = Math.max(0, Math.round((ex.end - Date.now()) / 1000)), t = document.getElementById('exTimer');
+      if (t) { t.textContent = '\u23f1 ' + String(Math.floor(left / 60)).padStart(2, '0') + ':' + String(left % 60).padStart(2, '0'); t.classList.toggle('low', left < 300); }
+      if (left <= 0) exSubmit('time');
+    }
+    function exQ() {
+      const e = ex, c = e.qs[e.i];
+      exOv().innerHTML = '<div class="ex-bar"><span>Mastery Examination</span><b id="exTimer"></b><span>Flags ' + e.flags + '/3</span></div><div class="ex-paper"><div class="ex-pal">' +
+        e.qs.map((x, k) => '<button class="' + (k === e.i ? 'cur ' : '') + (x.sel !== null ? 'ans' : '') + '" onclick="exGo(' + k + ')">' + (k + 1) + '</button>').join('') + '</div>' +
+        '<h2>Question ' + (e.i + 1) + ' of ' + e.n + '</h2><div class="ex-q">' + c.q.html + '</div>' +
+        c.q.opts.map((o, k) => '<button class="ex-opt' + (c.sel === k ? ' sel' : '') + '" onclick="exPick(' + k + ')"><b>' + 'ABCD'[k] + '.</b> ' + escHtml(o.label) + '</button>').join('') +
+        '<div class="ex-row"><button class="ex-btn ghost" onclick="exGo(' + (e.i - 1) + ')"' + (e.i ? '' : ' disabled') + '>Previous</button>' +
+        (e.i < e.n - 1 ? '<button class="ex-btn" onclick="exGo(' + (e.i + 1) + ')">Next</button>' : '<button class="ex-btn" onclick="exSubmit()">Submit examination</button>') + '</div></div>';
+      exTick();
+    }
+    function exGo(k) { if (k >= 0 && k < ex.n) { ex.i = k; exQ(); } }
+    function exPick(k) { ex.qs[ex.i].sel = k; exQ(); }
+    function exFlag() {
+      if (!ex || ex.done) return;
+      const t = Date.now(); if (t - ex.last < 1500) return; ex.last = t; ex.flags++;
+      if (ex.flags >= 3) { exSubmit('void'); return; }
+      exQ(); alert('Warning ' + ex.flags + ' of 3: leaving the examination window is recorded. At 3, your exam is voided.');
+    }
+    document.addEventListener('visibilitychange', () => { if (document.hidden) exFlag(); });
+    window.addEventListener('blur', exFlag);
+    document.addEventListener('contextmenu', e => { if (ex && !ex.done) e.preventDefault(); });
+    ['copy', 'cut', 'paste'].forEach(t => document.addEventListener(t, e => { if (ex && !ex.done) e.preventDefault(); }));
+    window.addEventListener('beforeunload', e => { if (ex && !ex.done) { e.preventDefault(); e.returnValue = ''; } });
+    function exSubmit(reason) {
+      const e = ex; if (!e || e.done) return;
+      if (!reason) { const u = e.qs.filter(x => x.sel === null).length; if (!confirm(u ? u + ' question(s) unanswered. Submit anyway?' : 'Submit your examination now?')) return; }
+      e.done = true; clearInterval(e.timer);
+      const ok = x => x.sel !== null && x.q.opts[x.sel].ok, score = e.qs.filter(ok).length, pct = Math.round(100 * score / e.n);
+      const voided = reason === 'void', pass = pct >= EX_PASS && !voided, g = voided ? 'N/A' : pct >= 90 ? 'A' : pct >= 80 ? 'B' : pct >= 70 ? 'C' : 'F';
+      if (!voided) { try { if (pct > (+exBest() || 0)) localStorage.setItem(EX_BEST, pct); } catch (x) {} }
+      const used = Math.min(e.n * 60, Math.round((Date.now() - (e.end - e.n * 60000)) / 1000)), cats = {};
+      e.qs.forEach(x => { const c = x.q.it.category; cats[c] = cats[c] || [0, 0]; cats[c][1]++; if (ok(x)) cats[c][0]++; });
+      const wrong = e.qs.map((x, k) => ({ x, k })).filter(o => !ok(o.x));
+      exOv().innerHTML = '<div class="ex-bar"><span>Jargon Buster</span><b>Examination Result</b><span></span></div><div class="ex-paper" style="text-align:center"><h1>Statement of Result</h1>' +
+        '<div class="ex-stamp ' + (pass ? 'pass' : 'fail') + '">' + (voided ? 'VOID' : pass ? 'PASS' : 'FAIL') + '</div>' + (voided ? '<p>The examination was ended after 3 integrity flags.</p>' : '') +
+        '<table class="ex-tbl"><tr><td>Marks</td><td>' + score + ' / ' + e.n + '</td></tr><tr><td>Percentage</td><td><b>' + pct + '%</b> (pass mark ' + EX_PASS + '%)</td></tr><tr><td>Grade</td><td>' + g + '</td></tr><tr><td>Time used</td><td>' + Math.floor(used / 60) + 'm ' + used % 60 + 's of ' + e.n + 'm</td></tr><tr><td>Integrity flags</td><td>' + e.flags + ' / 3</td></tr></table>' +
+        '<h2 style="text-align:left">Result by category</h2><table class="ex-tbl">' + Object.keys(cats).sort().map(c => '<tr><td style="text-align:left">' + escHtml(c) + '</td><td>' + cats[c][0] + ' / ' + cats[c][1] + '</td></tr>').join('') + '</table>' +
+        (wrong.length ? '<h2 style="text-align:left">Review of incorrect answers</h2><div style="text-align:left">' + wrong.map(o => '<div class="ex-rev"><b>Q' + (o.k + 1) + '.</b> ' + (o.x.sel === null ? 'No answer. ' : 'Your answer: ' + escHtml(o.x.q.opts[o.x.sel].label) + '. ') + '<br>' + o.x.q.why + '</div>').join('') + '</div>' : '') +
+        '<div class="ex-row" style="justify-content:center"><button class="ex-btn ghost" onclick="exClose()">Return to glossary</button><button class="ex-btn" onclick="exClose();exIntro()">Retake examination</button></div></div>';
+    }
+  
+    // ---- Pictures: an emoji picked from each term's analogy keywords (falls back to its category) ----
+    var ART_OVERRIDE = {}; // optional: { 'term_id': '🚀' } to force a picture for a specific term
+    var ART = [
+      ['submarine|ship|vessel|boat|harbor|harbour|naval|maritime|nautical|cruise|barge|tugboat', '\ud83d\udea2'],
+      ['airport|airline|airliner|aircraft|jet|flight|pilot|aviation|cockpit|runway|airplane|airspace|plane', '\u2708\ufe0f'],
+      ['rocket|satellite|space|launch|astronaut', '\ud83d\ude80'],
+      ['hospital|patient|medical|clinic|doctor|pharmaceutical|vaccine|surgical|physician|trauma|optometrist|apothecary|pharmacist', '\ud83c\udfe5'],
+      ['library|archive|archivist|manuscript|encyclopedia|textbook|book|librarian|catalog', '\ud83d\udcda'],
+      ['bank|ledger|teller|cheque|accountant|currency|escrow|financial|banknote|treasury', '\ud83c\udfe6'],
+      ['hotel|concierge|housekeeping', '\ud83c\udfe8'],
+      ['kitchen|chef|restaurant|diner|barista|espresso|bakery|pastry|wine|sommelier|dish|cook', '\ud83c\udf73'],
+      ['train|railway|metro|subway|transit|station|carriage|locomotive|bus', '\ud83d\ude86'],
+      ['taxi|highway|traffic|driver|truck|vehicle|car|racing|driving|toll', '\ud83d\ude97'],
+      ['museum|gallery|painting|art|artifacts', '\ud83d\uddbc\ufe0f'],
+      ['theatre|theater|stage|audience|orchestra|curtain|spotlight', '\ud83c\udfad'],
+      ['soccer|olympic|marathon|athlete|athletics|gymnastics|archery|sports|sporting|referee|skater', '\ud83c\udfc5'],
+      ['casino|roulette|gaming|arcade|dealer|chips', '\ud83c\udfb0'],
+      ['parcel|courier|mail|postal|post|letter|envelope|package|shipping|cargo|container|freight|warehouse|delivery', '\ud83d\udce6'],
+      ['lock|key|vault|guard|badge|fortress|padlock|keycard|security|steganographic', '\ud83d\udd10'],
+      ['passport|customs|embassy|diplomat|diplomatic|border|immigration|ambassador', '\ud83d\udec2'],
+      ['farm|plant|garden|botanical|wheat|agricultural|gardener|seed', '\ud83c\udf31'],
+      ['storm|hurricane|weather|rain|wind', '\u26c8\ufe0f'],
+      ['electric|electrical|power|grid|outlet|substation|transformer|plug|thermostat|furnace|generator', '\u26a1'],
+      ['water|pipe|plumbing|river|tide|spring|flood|sponge', '\ud83d\udca7'],
+      ['construction|blueprint|architect|bridge|apartment|building|homeowner|house|brick|scaffold', '\ud83c\udfd7\ufe0f'],
+      ['radio|telephone|phone|broadcast|channel|walkie', '\ud83d\udcfb'],
+      ['camera|photograph|photographer|video|footage|film|recorder|recording', '\ud83d\udcf7'],
+      ['clock|timer|schedule|stopwatch|hourly', '\u23f1\ufe0f'],
+      ['laboratory|microscope|chemist|geologist|scientist|forensic|assay', '\ud83d\udd2c'],
+      ['school|student|teacher|university|classroom|exam|examiner|proofreader|tutor', '\ud83c\udf93'],
+      ['detective|investigator|crime|police|evidence|inspector', '\ud83d\udd75\ufe0f'],
+      ['fire|flame|alarm|siren|lighthouse|emergency|patrol', '\ud83d\udea8'],
+      ['map|navigation|compass|coordinate|navigators', '\ud83e\udded'],
+      ['mountain|arctic|permafrost|mine|quarry', '\ud83c\udfd4\ufe0f'],
+      ['music|song|playlist|musician|concert', '\ud83c\udfb5'],
+      ['shopping|shopper|store|supermarket|retail|boutique|shop|customer', '\ud83d\udecd\ufe0f'],
+      ['factory|conveyor|manufacturer|production|assembly|sorting|machinery', '\ud83c\udfed'],
+      ['ticket|turnstile|amusement|carousel|rollercoaster|theme', '\ud83c\udfa2'],
+      ['court|tribunal|parliament|committee|council|ballot|treaty|notary|registry|judge|legal|elders', '\ud83c\udfdb\ufe0f'],
+      ['office|employee|corporate|desk|headquarters|receptionist', '\ud83c\udfe2']
+    ].map(function (a) { return [new RegExp('\\b(?:' + a[0] + ')(?:s|es)?\\b', 'i'), a[1]]; });
+    var CAT_ART = [
+      [/secur|identity/i, '\ud83d\udd10'], [/reliab|operat/i, '\ud83d\udee1\ufe0f'], [/assess/i, '\ud83d\udcdd'], [/dual/i, '\ud83c\udfad'],
+      [/analytics/i, '\ud83d\udcca'], [/data|govern/i, '\ud83d\uddc2\ufe0f'], [/platform|infra/i, '\u2601\ufe0f'], [/devops|deliver|engineer/i, '\ud83d\udee0\ufe0f'],
+      [/integrat|api|middleware/i, '\ud83d\udd0c'], [/cloud|distrib/i, '\ud83c\udf10'], [/archit/i, '\ud83c\udfdb\ufe0f']
+    ];
+    function catArt(c) { for (var i = 0; i < CAT_ART.length; i++) if (CAT_ART[i][0].test(c || '')) return CAT_ART[i][1]; return '\u2728'; }
+    function artFor(it) {
+      if (ART_OVERRIDE[it.id]) return ART_OVERRIDE[it.id];
+      var t = it.analogy || '';
+      for (var i = 0; i < ART.length; i++) if (ART[i][0].test(t)) return ART[i][1];
+      return catArt(it.category);
+    }
+
+    // ---- Focus mode: click a card to dim everything else; click the dimmed background to go back ----
+    function focusCard(c) {
+      unfocusCard();
+      c.classList.add('focused');
+      document.body.classList.add('focus-on');
+      document.getElementById('focusDim').classList.add('on');
+      c.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    function unfocusCard() {
+      document.querySelectorAll('.card.focused').forEach(function (c) { c.classList.remove('focused'); });
+      document.body.classList.remove('focus-on');
+      var d = document.getElementById('focusDim'); if (d) d.classList.remove('on');
+    }
+    document.getElementById('cardsGrid').addEventListener('click', function (e) {
+      var c = e.target.closest('.card');
+      if (!c || e.target.closest('button, .pill, a')) return;
+      focusCard(c);
+    });
+    window.addEventListener('keydown', function (e) { if (e.key === 'Escape') unfocusCard(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# One category per line:  Name | colour
+# The build warns if an entry uses a category that is not listed here.
+Data & Analytics            | #a3d94a
+Cloud & Infrastructure      | #4aa8ff
+Engineering & DevOps        | #f59f00
+Architecture                | #c084fc
+Security & Identity         | #f87171
+Reliability & Operations    | #2dd4bf
+Integration & APIs          | #fb923c
+Dual-Meaning Terms          | #facc15
